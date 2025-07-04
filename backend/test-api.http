@@ -1,0 +1,98 @@
+# Test API endpoints for User Management
+
+### 1. Get all users (initially empty)
+GET http://localhost:3000/api/users
+Content-Type: application/json
+
+###
+
+### 2. Create a new user
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "juan123",
+  "email": "juan@email.com",
+  "password": "miPassword123",
+  "avatar": "https://example.com/avatar.jpg"
+}
+
+###
+
+### 3. Create another user
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "maria_doe",
+  "email": "maria@email.com", 
+  "password": "secretPassword456"
+}
+
+###
+
+### 4. Try to create user with duplicate email (should fail)
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "juan_duplicate",
+  "email": "juan@email.com",
+  "password": "anotherPassword"
+}
+
+###
+
+### 5. Get all users (should show created users)
+GET http://localhost:3000/api/users
+Content-Type: application/json
+
+###
+
+### 6. Get user by ID (replace with actual ID from previous responses)
+GET http://localhost:3000/api/users/USER_ID_HERE
+Content-Type: application/json
+
+###
+
+### 7. Update user status to online (replace with actual ID)
+PATCH http://localhost:3000/api/users/USER_ID_HERE/status
+Content-Type: application/json
+
+{
+  "isOnline": true
+}
+
+###
+
+### 8. Update user status to offline (replace with actual ID)
+PATCH http://localhost:3000/api/users/USER_ID_HERE/status
+Content-Type: application/json
+
+{
+  "isOnline": false
+}
+
+###
+
+### 9. Try invalid username (should fail)
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "ab",
+  "email": "short@email.com",
+  "password": "password123"
+}
+
+###
+
+### 10. Try invalid email (should fail)
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "validuser",
+  "email": "invalid-email",
+  "password": "password123"
+}

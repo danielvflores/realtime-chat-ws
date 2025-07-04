@@ -1,0 +1,46 @@
+### Test API - Get all users
+GET http://localhost:3000/api/users
+Content-Type: application/json
+
+###
+
+### Test API - Basic endpoint
+GET http://localhost:3000/api
+Content-Type: application/json
+
+###
+
+### Create a new user
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "juan123",
+  "email": "juan@email.com",
+  "password": "123456"
+}
+
+###
+
+### Create another user
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "maria_doe",
+  "email": "maria@email.com",
+  "password": "password123",
+  "avatar": "https://example.com/avatar.jpg"
+}
+
+###
+
+### Try invalid data (should fail)
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+  "username": "ab",
+  "email": "invalid-email",
+  "password": "123"
+}
