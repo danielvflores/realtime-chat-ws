@@ -40,7 +40,7 @@ class MigrationRunner {
   private getMigrationFiles(): string[] {
     const files = fs.readdirSync(this.migrationsDir)
       .filter(file => file.endsWith('.sql'))
-      .sort(); // Orden alfabético: users.sql, messages.sql
+      .sort();
     
     return files;
   }
@@ -52,10 +52,9 @@ class MigrationRunner {
     console.log(`🔄 Executing migration: ${filename}`);
     
     try {
-      // Ejecutar el SQL del archivo
+
       await database.run(sql);
-      
-      // Marcar como ejecutada
+
       await database.run(
         'INSERT INTO migrations (name) VALUES (?)',
         [filename]
@@ -99,7 +98,7 @@ class MigrationRunner {
   }
 
   public async rollbackLastMigration(): Promise<void> {
-    // Opcional: para deshacer la última migración
+
     console.log('🔄 Rolling back last migration...');
     
     const lastMigration = await database.get<Migration>(

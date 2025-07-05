@@ -66,10 +66,8 @@ export class UserRepository {
   
   async create(userData: IUserRegister): Promise<UserEntity> {
     try {
-      // Crear entidad y hashear password
       const userEntity = await UserEntity.createFromRegister(userData);
-      
-      // Guardar en base de datos
+  
       await database.run(
         `INSERT INTO users (id, username, email, password, avatar, isOnline, lastSeen, createdAt) 
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,

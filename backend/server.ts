@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
+import messageRoutes from './routes/messageRoutes';
+import authRoutes from './routes/authRoutes';
 import database from './db/database';
 
 dotenv.config();
@@ -16,8 +18,9 @@ app.get('/api', (req: Request, res: Response) => {
 });
 
 // API Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-//app.use('/api/messages', messageRoutes); // Uncomment when messageRoutes is defined
+app.use('/api/messages', messageRoutes);
 //app.use('/api/rooms', roomRoutes); // Uncomment when roomRoutes is defined
 
 // Initialize database and start server
