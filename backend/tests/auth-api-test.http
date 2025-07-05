@@ -1,0 +1,123 @@
+# =======================================
+# AUTHENTICATION API TESTS
+# =======================================
+
+### Variables
+@baseUrl = http://localhost:3000/api
+
+### 1. Register a new user
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "testauth",
+  "email": "testauth@example.com",
+  "password": "123456"
+}
+
+### 2. Login with the registered user
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "testauth@example.com",
+  "password": "123456"
+}
+
+### 3. Verify token (use token from login response)
+GET {{baseUrl}}/auth/verify
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 4. Get user profile (use token from login response)
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 5. Change password (use token from login response)
+PUT {{baseUrl}}/auth/change-password
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "currentPassword": "123456",
+  "newPassword": "newpassword123"
+}
+
+### 6. Logout (use token from login response)
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 7. Test invalid login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "testauth@example.com",
+  "password": "wrongpassword"
+}
+
+### 8. Test accessing protected route without token
+GET {{baseUrl}}/auth/profile
+
+### 9. Test duplicate registration
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "testauth2",
+  "email": "testauth@example.com",
+  "password": "123456"
+}
+
+### 10. Test validation - missing fields
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser"
+}
+
+# =======================================
+# PROTECTED MESSAGE ROUTES TESTS
+# =======================================
+
+### 11. Create a message with authentication (use token from login)
+POST {{baseUrl}}/messages
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "toUser": "9603843e-fd6d-4a06-8006-b101a0364f70",
+  "message": "¡Mensaje autenticado!",
+  "messageType": "text"
+}
+
+### 12. Try to create message without authentication
+POST {{baseUrl}}/messages
+Content-Type: application/json
+
+{
+  "fromUser": "some-user-id",
+  "toUser": "another-user-id",
+  "message": "Mensaje sin autenticación"
+}
+
+### 13. Get user messages (protected route - use your own user ID and token)
+GET {{baseUrl}}/messages/user/YOUR_USER_ID_HERE
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 14. Try to access another user's messages (should fail)
+GET {{baseUrl}}/messages/user/9603843e-fd6d-4a06-8006-b101a0364f70
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 15. Update a message (use message ID and token)
+PUT {{baseUrl}}/messages/MESSAGE_ID_HERE
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "message": "Mensaje editado con autenticación"
+}
+
+### 16. Delete a message (use message ID and token)
+DELETE {{baseUrl}}/messages/MESSAGE_ID_HERE
+Authorization: Bearer YOUR_TOKEN_HERE

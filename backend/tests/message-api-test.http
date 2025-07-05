@@ -1,0 +1,105 @@
+# =======================================
+# MESSAGE API TESTS
+# =======================================
+
+### Variables
+@baseUrl = http://localhost:3000/api
+@userId1 = user-001
+@userId2 = user-002
+@roomId = room-general
+
+### 1. Create a message between users
+POST {{baseUrl}}/messages
+Content-Type: application/json
+
+{
+  "fromUser": "{{userId1}}",
+  "toUser": "{{userId2}}",
+  "message": "¡Hola! ¿Cómo estás?",
+  "messageType": "text"
+}
+
+### 2. Create a message in a room
+POST {{baseUrl}}/messages
+Content-Type: application/json
+
+{
+  "fromUser": "{{userId1}}",
+  "roomFromMessage": "{{roomId}}",
+  "message": "¡Hola grupo! ¿Cómo están todos?",
+  "messageType": "text"
+}
+
+### 3. Create a reply message
+POST {{baseUrl}}/messages
+Content-Type: application/json
+
+{
+  "fromUser": "{{userId2}}",
+  "toUser": "{{userId1}}",
+  "message": "¡Todo bien! ¿Y tú?",
+  "messageType": "text",
+  "replyTo": "MESSAGE_ID_HERE"
+}
+
+### 4. Get conversation messages between two users
+GET {{baseUrl}}/messages/conversation/{{userId1}}/{{userId2}}?limit=10&offset=0
+
+### 5. Get room messages
+GET {{baseUrl}}/messages/room/{{roomId}}?limit=10&offset=0
+
+### 6. Get user messages
+GET {{baseUrl}}/messages/user/{{userId1}}?limit=10&offset=0
+
+### 7. Get recent conversations
+GET {{baseUrl}}/messages/user/{{userId1}}/conversations?limit=5
+
+### 8. Search messages
+GET {{baseUrl}}/messages/search?query=Hola&userId={{userId1}}&limit=10
+
+### 9. Get message by ID
+GET {{baseUrl}}/messages/MESSAGE_ID_HERE
+
+### 10. Get replies to a message
+GET {{baseUrl}}/messages/MESSAGE_ID_HERE/replies
+
+### 11. Update a message
+PUT {{baseUrl}}/messages/MESSAGE_ID_HERE
+Content-Type: application/json
+
+{
+  "message": "¡Hola! ¿Cómo estás? (editado)",
+  "fromUserId": "{{userId1}}"
+}
+
+### 12. Get user message statistics
+GET {{baseUrl}}/messages/user/{{userId1}}/stats
+
+### 13. Delete a message
+DELETE {{baseUrl}}/messages/MESSAGE_ID_HERE
+Content-Type: application/json
+
+{
+  "fromUserId": "{{userId1}}"
+}
+
+### 14. Test validation - Missing fromUser
+POST {{baseUrl}}/messages
+Content-Type: application/json
+
+{
+  "toUser": "{{userId2}}",
+  "message": "Mensaje sin fromUser"
+}
+
+### 15. Test validation - Missing destination
+POST {{baseUrl}}/messages
+Content-Type: application/json
+
+{
+  "fromUser": "{{userId1}}",
+  "message": "Mensaje sin destinatario"
+}
+
+### 16. Test error - Message not found
+GET {{baseUrl}}/messages/non-existent-id
